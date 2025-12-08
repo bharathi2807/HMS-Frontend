@@ -1,0 +1,44 @@
+body{
+    background-image: url(../../assets/images/doc2.jpg);
+    background-repeat: round;
+    height: 100vh;
+}
+.inner-layer{
+    height:100vh;
+    background: rgba(0, 0, 0, 0.4);
+}
+.navbar{
+    text-transform: uppercase;
+    background:rgba(99, 146, 165, 0.2)!important;
+}
+
+.but{
+    padding-top: 10rem;
+}
+.btn{
+    color:whitesmoke;
+    background-color: rgba(63, 190, 240, 0.7)!important;
+    font-weight: bold;
+    font-size: 24px;
+
+}
+.btn:hover{
+    color:whitesmoke;
+}
+.icons{
+    padding-top: 7rem;
+   
+}
+.icons .btn{
+    background-color:rgba(63, 190, 240, 0.7)!important;
+    margin:.5rem;
+    margin-left: 10px;
+    font-weight: bold;
+    font-size: 24px;
+    width:190px;
+}
+
+.icons .btn:hover{
+  
+    color: black;
+}
