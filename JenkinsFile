@@ -1,6 +1,12 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_IMAGE = "hms-frontend"
+        CONTAINER_NAME = "hms-ang-container"
+        APP_PORT = "8081"
+    }
+
     stages {
         stage('Clone Repo') {
             steps {
@@ -29,17 +35,17 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t hms-frontend .'
+                sh "docker build -t ${DOCKER_IMAGE} ."
             }
         }
 
         stage('Run Docker Container') {
             steps {
-                sh '''
-                docker stop hms-ang-container || true
-                docker rm hms-ang-container || true
-                docker run -d -p 8081:80 --name hms-ang-container hms-frontend
-                '''
+                sh """
+                docker stop ${CONTAINER_NAME} || true
+                docker rm -f ${CONTAINER_NAME} || true
+                docker run -d -p ${APP_PORT}:80 --name ${CONTAINER_NAME} ${DOCKER_IMAGE}
+                """
             }
         }
     }
