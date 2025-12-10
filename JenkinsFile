@@ -1,0 +1,46 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone Repo') {
+            steps {
+                checkout scmGit(
+                    branches: [[name: '*/main']], 
+                    extensions: [], 
+                    userRemoteConfigs: [[
+                        credentialsId: '4e1bd1bf-83e1-46af-a4c8-e5e295083c37', 
+                        url: 'https://github.com/bharathi2807/HMS-Frontend.git'
+                    ]]
+                )
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm install'
+            }
+        }
+
+        stage('Build Angular App') {
+            steps {
+                sh 'npm run build --prod'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t HMS-Frontend .'
+            }
+        }
+
+        stage('Run Docker Container') {
+            steps {
+                sh '''
+                docker stop HMS-Ang-container || true
+                docker rm HMS-Ang-container || true
+                docker run -d -p 8080:80 --name HMS-Ang-container HMS-Frontend
+                '''
+            }
+        }
+    }
+}
