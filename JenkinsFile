@@ -29,16 +29,16 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t HMS-Frontend .'
+                sh 'docker build -t hms-frontend .'
             }
         }
 
         stage('Run Docker Container') {
             steps {
                 sh '''
-                docker stop HMS-Ang-container || true
-                docker rm HMS-Ang-container || true
-                docker run -d -p 8080:80 --name HMS-Ang-container HMS-Frontend
+                docker stop hms-ang-container || true
+                docker rm hms-ang-container || true
+                docker run -d -p 8081:80 --name hms-ang-container hms-frontend
                 '''
             }
         }
