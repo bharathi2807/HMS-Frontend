@@ -2,9 +2,10 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "hms-frontend"
+        DOCKER_IMAGE = "hms-frontend-angular"
         CONTAINER_NAME = "hms-ang-container"
-        APP_PORT = "8081"
+        APP_PORT = "4200"
+        NETWORK_NAME = "hms-network"
     }
 
     stages {
@@ -14,7 +15,7 @@ pipeline {
                     branches: [[name: '*/main']], 
                     extensions: [], 
                     userRemoteConfigs: [[
-                        credentialsId: '4e1bd1bf-83e1-46af-a4c8-e5e295083c37', 
+                        credentialsId: 'Git_Creds', 
                         url: 'https://github.com/bharathi2807/HMS-Frontend.git'
                     ]]
                 )
@@ -44,7 +45,7 @@ pipeline {
                 sh """
                 docker stop ${CONTAINER_NAME} || true
                 docker rm -f ${CONTAINER_NAME} || true
-                docker run -d -p ${APP_PORT}:80 --name ${CONTAINER_NAME} ${DOCKER_IMAGE}
+                docker run -d --name ${CONTAINER_NAME} --network ${NETWORK_NAME} -p ${APP_PORT}:80 ${DOCKER_IMAGE}
                 """
             }
         }
