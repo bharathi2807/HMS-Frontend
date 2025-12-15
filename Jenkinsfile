@@ -1,5 +1,5 @@
 pipeline {
-    agent none
+    agent any
 
     environment {
         DOCKER_IMAGE = "hms-frontend-angular"
@@ -10,32 +10,19 @@ pipeline {
 
     stages {
 
-        stage('Build Angular') {
-            agent {
-                docker {
-                    image 'node:20-alpine'
-                    args '-u root'
-                }
-            }
+        stage('Checkout') {
             steps {
                 checkout scm
-                sh 'node -v'
-                sh 'npm -v'
-                sh 'npm install'
-                sh 'npm run build --prod'
-                sh 'ls -l dist'
             }
         }
 
         stage('Build Docker Image') {
-            agent any
             steps {
                 sh "docker build -t ${DOCKER_IMAGE} ."
             }
         }
 
-        stage('Run Docker Container') {
-            agent any
+        stage('Deploy Container') {
             steps {
                 sh """
                 docker stop ${CONTAINER_NAME} || true
