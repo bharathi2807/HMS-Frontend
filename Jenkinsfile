@@ -1,46 +1,41 @@
 pipeline {
-    agent any
+    agent none
 
     environment {
         DOCKER_IMAGE = "hms-frontend-angular"
         CONTAINER_NAME = "hms-ang-container"
-        APP_PORT = "4200"
+        APP_PORT = "8085"
         NETWORK_NAME = "hms-network"
     }
 
     stages {
-        stage('Clone Repo') {
-            steps {
-                checkout scmGit(
-                    branches: [[name: '*/main']], 
-                    extensions: [], 
-                    userRemoteConfigs: [[
-                        credentialsId: 'Git_Creds', 
-                        url: 'https://github.com/bharathi2807/HMS-Frontend.git'
-                    ]]
-                )
-            }
-        }
 
-        stage('Install Dependencies') {
+        stage('Build Angular') {
+            agent {
+                docker {
+                    image 'node:20-alpine'
+                    args '-u root'
+                }
+            }
             steps {
+                checkout scm
+                sh 'node -v'
+                sh 'npm -v'
                 sh 'npm install'
-            }
-        }
-
-        stage('Build Angular App') {
-            steps {
-                sh 'npm run build --prod'
+                sh 'npm run build'
+                sh 'ls -l dist'
             }
         }
 
         stage('Build Docker Image') {
+            agent any
             steps {
                 sh "docker build -t ${DOCKER_IMAGE} ."
             }
         }
 
         stage('Run Docker Container') {
+            agent any
             steps {
                 sh """
                 docker stop ${CONTAINER_NAME} || true
