@@ -1,27 +1,78 @@
-# HMS
+# HMS Frontend – Angular Application
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.3.
+This project is the frontend for the HMS application, developed using Angular 13 and deployed using a CI/CD pipeline with Jenkins and Docker.
 
-## Development server
+---
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Tech Stack
+- Angular 13
+- Node.js 13
+- Docker
+- Jenkins
+- Git
 
-## Code scaffolding
+---
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Project Structure
+src/
+Dockerfile
+Jenkinsfile
+angular.json
+package.json
+README.md
 
-## Build
+---
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Local Setup (Without Docker)
 
-## Running unit tests
+### Prerequisites
+- Node.js 13
+- Angular CLI (v13)
+- Git
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Steps
+git clone https://github.com/bharathi2807/HMS-Frontend.git
+cd HMS-Frontend
+npm install
+ng serve
 
-## Running end-to-end tests
+Application will be available at:
+http://localhost:4200
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+---
 
-## Further help
+## Docker Setup
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+### Build Docker Image
+docker build -t hms-frontend .
+
+### Run Docker Container
+docker run -d -p 4200:80 --name hms-frontend-container hms-frontend
+
+---
+
+## CI/CD Pipeline (Jenkins)
+
+This project uses a Jenkins pipeline to automate build and deployment.
+
+### Pipeline Flow
+1. Triggered automatically on every Git push
+2. Installs Node dependencies
+3. Builds Angular production artifacts
+4. Builds Docker image
+5. Stops the existing container only after successful build
+6. Deploys the updated container
+
+---
+
+## DevOps Learning Outcomes
+- Implemented CI/CD pipeline using Jenkins
+- Dockerized Angular application
+- Automated deployments on Git push
+- Reduced manual deployment effort
+- Ensured consistent deployments across environments
+
+---
+
+## Author
+Jeeva Bharathi
